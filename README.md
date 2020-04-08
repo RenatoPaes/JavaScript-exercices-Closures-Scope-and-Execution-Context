@@ -1,0 +1,1 @@
+# JavaScript-exercices-Closures-Scope-and-Execution-Context
