@@ -68,3 +68,80 @@ const onceFunc = once(addByTwo);
 console.log(onceFunc(4));  // => should log 6
 console.log(onceFunc(10));  // => should log 6
 console.log(onceFunc(9001));  // => should log 6
+
+Challenge 5: ----------------------------------------
+
+const after = (count, callback) => {
+  let counter = 0;
+  function inside() {
+    counter++;
+    if (counter >= count) {
+    callback();
+    }
+  }
+  return inside;
+}
+
+const called = function() { console.log('hello') };
+
+const afterCalled = after(3, called);
+
+afterCalled(); // => nothing is printed
+afterCalled(); // => nothing is printed
+afterCalled(); // => 'hello' is printed
+
+Challenge 6: ----------------------------------------
+
+const delay = (callback, timeToWait, message, redSign) => {
+  function upperFunc () {
+    setTimeout(waiting, timeToWait);
+  }
+  function waiting() {
+  return callback(message);
+  }
+  return upperFunc;
+}
+
+const sayHello = (message) => {console.log(message)}
+const calling = delay(sayHello, 3000, 'Hello, thanks for waiting!');
+
+calling();
+
+Challenge 7: ----------------------------------------
+
+const rollCall = names => {
+  let counter = 0;
+  function returnName() {
+    if (counter < names.length) {
+      console.log(names[counter]);
+      counter ++;
+    }
+    else (console.log('Everyone accounted for'))
+  }
+  return returnName;
+}
+
+const rollCaller = rollCall(['Victoria', 'Juan', 'Ruth'])
+rollCaller() // => should log 'Victoria'
+rollCaller() // => should log 'Juan'
+rollCaller() // => should log 'Ruth'
+rollCaller() // => should log 'Everyone accounted for'
+
+Challenge 8: ----------------------------------------
+
+const cycleIterator = array => {
+  let counter = 0;
+  function innerFunc() {
+    if (counter == array.length) { counter = 0; }
+    counter ++;
+    return (array[counter-1]);
+  }
+  return innerFunc;
+}
+
+const threeDayWeekend = ['Fri', 'Sat', 'Sun'];
+const getDay = cycleIterator(threeDayWeekend);
+console.log(getDay()); // => should log 'Fri'
+console.log(getDay()); // => should log 'Sat'
+console.log(getDay()); // => should log 'Sun'
+console.log(getDay()); // => should log 'Fri'
