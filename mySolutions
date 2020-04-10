@@ -117,7 +117,7 @@ const rollCall = names => {
       counter ++;
     }
     else (console.log('Everyone accounted for'))
-  }
+  } 
   return returnName;
 }
 
@@ -127,7 +127,7 @@ rollCaller() // => should log 'Juan'
 rollCaller() // => should log 'Ruth'
 rollCaller() // => should log 'Everyone accounted for'
 
-Challenge 8: ----------------------------------------
+Challenge 9: ----------------------------------------
 
 const cycleIterator = array => {
   let counter = 0;
@@ -145,3 +145,250 @@ console.log(getDay()); // => should log 'Fri'
 console.log(getDay()); // => should log 'Sat'
 console.log(getDay()); // => should log 'Sun'
 console.log(getDay()); // => should log 'Fri'
+
+Challenge 10: ----------------------------------------
+
+const defineFirstArg = (callback, argument) => {
+  function innerFunc(value) {
+    return callback(argument, value);
+  }
+  return innerFunc;
+}
+
+const subtract = function(big, small) { return big - small; };
+const subFrom20 = defineFirstArg(subtract, 20);
+console.log(subFrom20(5)); // => should log 15
+
+Challenge 11: ----------------------------------------
+
+const dateStamp = callback => {
+  function returnedFunc(input){
+  let myObj = {};
+  myObj.date = [callback(input)];
+  return myObj;
+  }
+  return returnedFunc;
+}
+
+const stampedMultBy2 = dateStamp(n => n * 2);
+console.log(stampedMultBy2(4)); // => should log { date: (today's date), output: 8 }
+console.log(stampedMultBy2(6)); // => should log { date: (today's date), output: 12 }
+
+Challenge 12: ----------------------------------------
+
+const censor = () => {
+  let arrayOfWords = [];
+  let text;
+  function returnedFunc(firstStr, secondStr) {
+    if (secondStr) {
+      arrayOfWords.push(firstStr);
+      arrayOfWords.push(secondStr);
+    }
+    if (!secondStr) {
+      console.log(arrayOfWords)
+      let text = firstStr;
+      for (let i = 0; i < arrayOfWords.length; i+=2) {
+        text = text.replace(arrayOfWords[i], arrayOfWords[i+1]);
+      }
+      return text;
+    }
+  }
+  return returnedFunc;
+}
+
+const changeScene = censor();
+changeScene('dogs', 'cats');
+changeScene('quick', 'slow');
+console.log(changeScene('The quick, brown fox jumps over the lazy dogs.')); // => should log 'The slow, brown fox jumps over the lazy cats.'
+
+OR ----------------------------------
+
+const censor = () => {
+  let arrayOfWords = [];
+  let arrayOfTexts = [];
+  function returnedFunc(firstStr, secondStr) {
+    if (secondStr) {
+      arrayOfWords.push(firstStr);
+      arrayOfWords.push(secondStr);
+      console.log(arrayOfWords)
+    }
+    if (!secondStr) {
+      arrayOfTexts.push(firstStr);
+      for (let i = 0; i < arrayOfWords.length; i+=2) {
+        arrayOfTexts.push(arrayOfTexts[i/2].replace(arrayOfWords[i], arrayOfWords[i+1]));
+      }
+      console.log(arrayOfTexts)
+      return arrayOfTexts[arrayOfTexts.length-1];
+    }
+  }
+  return returnedFunc;
+}
+
+const changeScene = censor();
+changeScene('dogs', 'cats');
+changeScene('quick', 'slow');
+console.log(changeScene('The quick, brown fox jumps over the lazy dogs.')); // => should log 'The slow, brown fox jumps over the lazy cats.'
+
+Challenge 13: ----------------------------------------
+
+const createSecretHolder = (secretValue) => {
+  var object = {};
+  object.secret = [secretValue];
+  function secretBox() {
+    object.getSecret = function() { return object.secret; }
+    object.setSecret = function(newSecret) { object.secret = [newSecret]; }
+  return object;
+  }
+  return secretBox();
+}
+
+const obj = createSecretHolder(5)
+
+obj.getSecret() // => returns 5
+obj.setSecret(2)
+obj.getSecret() // => returns 2
+
+Challenge 14: ----------------------------------------
+
+const callTimes = () => {
+  let counter = 0;
+  function returnedFunc () {
+    counter++;
+    return counter;
+  }
+  return returnedFunc;
+}
+
+let myNewFunc1 = callTimes();
+let myNewFunc2 = callTimes();
+myNewFunc1(); // => 1
+myNewFunc1(); // => 2
+myNewFunc2(); // => 1
+myNewFunc2(); // => 2
+
+Challenge 15: ----------------------------------------
+
+const russianRoulette = n => {
+  let counter = 0;
+  let number = n-1;
+  function barrel(reload) {
+    
+    if (reload == 'pull the trigger') {
+      if(counter < number) {
+        counter++;
+        return 'click';
+      }
+      if (counter == number) {
+        counter++;
+        return 'BANG!';
+      }
+      else { return 'reload to play again'; }
+    }
+    if (reload == 'reload') {
+      counter = 0;
+      return 'Gun is realoaded!'
+    }
+  }
+  return barrel;
+}
+
+const play = russianRoulette(3);
+play('pull the trigger'); // => should log 'click'
+play('pull the trigger'); // => should log 'click'
+play('pull the trigger'); // => should log 'BANG'
+play('pull the trigger'); // => should log 'reload to play again'
+play('reload'); // => should log 'Gun is realoaded!'
+play('pull the trigger'); // => should log 'click'
+play('pull the trigger'); // => should log 'click'
+play('pull the trigger'); // => should log 'BANG!'
+
+Challenge 16: ----------------------------------------
+
+const average = () => {
+  let counter = 0;
+  let totalSum = 0;
+  function mathMagic(number) {
+    if (!number && counter == 0) {
+      return 0;
+    }
+    else if (number) {
+      counter++;
+      totalSum += number;
+      return totalSum/counter;
+    }
+    else if (!number) {
+      return totalSum/counter;
+    }
+  }
+  return mathMagic;
+}
+
+const avgSoFar = average();
+console.log(avgSoFar()); // => should log 0
+console.log(avgSoFar(4)); // => should log 4
+console.log(avgSoFar(8)); // => should log 6
+console.log(avgSoFar()); // => should log 6
+console.log(avgSoFar(12)); // => should log 8
+console.log(avgSoFar()); // => should log 8
+
+Challenge 17: ----------------------------------------
+
+const makeFuncTester = array => {
+  function returnedFunc(callback) {
+    for (let i = 0; i < array.length; i++) {
+      if (callback(array[i][0]) !== array[i][1]) {
+        return false;
+      }
+      else { return true; }
+    }
+  }
+  return returnedFunc;
+}
+
+const capLastTestCases = [];
+capLastTestCases.push(['hello', 'hellO']);
+capLastTestCases.push(['goodbye', 'goodbyE']);
+capLastTestCases.push(['howdy', 'howdY']);
+const shouldCapitalizeLast = makeFuncTester(capLastTestCases);
+const capLastAttempt1 = str => str.toUpperCase();
+const capLastAttempt2 = str => str.slice(0, -1) + str.slice(-1).toUpperCase();
+console.log(shouldCapitalizeLast(capLastAttempt1)); // => should log false
+console.log(shouldCapitalizeLast(capLastAttempt2)); // => should log true
+
+Challenge 18: ----------------------------------------
+
+const makeHistory = number => {
+  let arrayOfWords = [];
+  function returnedFunc(word) {
+    if (word == 'undo' && arrayOfWords.length == 0) {
+      return 'nothing to undo';
+    }
+    else if (word == 'undo') {
+      let x = arrayOfWords[arrayOfWords.length-1];
+      arrayOfWords.pop();
+      return x + ' undone';
+    }
+    else if (word !== 'undo' && arrayOfWords.length == number){
+      arrayOfWords.shift();
+      arrayOfWords.push(word);
+      let x = arrayOfWords[arrayOfWords.length-1];
+      return x + ' done'
+    }
+    else {
+      arrayOfWords.push(word);
+      let x = arrayOfWords[arrayOfWords.length-1];
+      return x + ' done'
+    }
+  }
+  return returnedFunc;
+}
+
+const myActions = makeHistory(2);
+console.log(myActions('jump')); // => should log 'jump done'
+console.log(myActions('undo')); // => should log 'jump undone'
+console.log(myActions('walk')); // => should log 'walk done'
+console.log(myActions('code')); // => should log 'code done'
+console.log(myActions('pose')); // => should log 'pose done'
+console.log(myActions('undo')); // => should log 'pose undone'
+console.log(myActions('undo')); // => should log 'code undone'
+console.log(myActions('undo')); // => should log 'nothing to undo'
