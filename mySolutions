@@ -392,3 +392,79 @@ console.log(myActions('pose')); // => should log 'pose done'
 console.log(myActions('undo')); // => should log 'pose undone'
 console.log(myActions('undo')); // => should log 'code undone'
 console.log(myActions('undo')); // => should log 'nothing to undo'
+
+FINAL CHALLENGE: BLACKJACK! ---------------------------------------
+
+const blackJack = (cards) => {
+  console.log("Hello, welcome to virtual BlackJack, made by Renato!");
+  console.log("The instructions are: type play('draw') to draw a card and play('RESET') to reset the machine!");
+  console.log("Good luck and enjoy :)");
+  const unchangingDeck = cards;
+  let currentDeck = cards;
+  let drawnCards = [];
+  let currentSum = 0;
+  let chanceToFail = 0;
+  
+  function reset() {
+    currentDeck = unchangingDeck;
+    drawnCards = [];
+    currentSum = 0;
+    console.log('Game reseted!')
+  }
+  
+  function passNumberToCurrentSum(input) {
+    if (input == 'J') { return 10; }
+    if (input == 'Q') { return 10; }
+    if (input == 'K') { return 10; }
+    if (input == 'A' && currentSum == 10) { return 11; }
+    if (input == 'A' && currentSum > 10) { return 1; }
+    if (input == 'A' && currentSum < 10) { return 1; }
+    else { return input; }
+    }
+  
+  function chanceToFailWithNextCard() {
+    let failCounter = 0;
+    for (let i = 0; i < currentDeck.length; i++) {
+      if ((currentSum + (passNumberToCurrentSum(currentDeck[i]))) > 21) { failCounter ++; }
+      }
+    chanceToFail = (failCounter/currentDeck.length)*100;
+    }
+  
+    function winLooseOrDraw() {
+      if (currentSum < 21) { 
+        return console.log('You have drawn the card ' + drawnCards[drawnCards.length-1] + ', your current Sum is: ' + currentSum + ' and the chance of failing on next draw is: ' +                   chanceToFail + '%.');
+      }
+      if (currentSum == 21) { 
+        return console.log('Yaaaaay! 21! Congratulations! If you wanna play again use RESET command!');
+      }
+      if (currentSum > 21) { 
+        return console.log('You\'ve lost!, if you wanna play again use RESET command!') 
+      }
+    }
+  
+  function drawCards(word) {
+    if (word == 'RESET') {
+      return reset();
+    }
+    
+    if (word == 'draw' && currentSum == 21) { 
+      return console.log('Yaaaaay! 21! Congratulations! If you wanna play again use RESET command!')
+    }
+    if (word == 'draw') {
+      let randomIndex = (Math.round(Math.random() * (currentDeck.length - 1)));
+      let drawnCard = currentDeck.splice(randomIndex, 1);
+      drawnCards.push(drawnCard[0]);
+      currentSum += passNumberToCurrentSum(drawnCard[0]);
+      chanceToFailWithNextCard();
+      console.log(currentSum);
+      return winLooseOrDraw();
+    }
+  }
+  return drawCards;
+}
+
+const playCards = ['A','A','A','A',2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,'J','J','J','J','Q','Q','Q','Q','K','K','K','K'];
+
+const play = blackJack(playCards);
+
+play('draw');
